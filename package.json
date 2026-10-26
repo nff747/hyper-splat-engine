@@ -1,0 +1,32 @@
+{
+  "name": "hyper-splat-engine",
+  "version": "0.1.0",
+  "description": "Zero-copy, virtualized WebGPU 3D Gaussian Splatting and spatial AI engine with distance LoD tile streaming and proactive VRAM paging.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "build": "tsc"
+  },
+  "keywords": [
+    "webgpu",
+    "gaussian-splatting",
+    "spatial-computing",
+    "wgsl",
+    "bvh",
+    "vram-paging",
+    "3d"
+  ],
+  "author": "nff747 <https://github.com/nff747>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nff747/hyper-splat-engine.git"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0"
+  }
+}
