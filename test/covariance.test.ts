@@ -30,4 +30,11 @@ describe('Gaussian Covariance Math', () => {
     expect(cyy).toBeGreaterThan(0.3);
     expect(cxy).toBeCloseTo(0.0);
   });
+
+  it('safely returns zero covariance for non-finite view positions or points behind camera', () => {
+    const cov3D = new Float32Array(6);
+    expect(project2DCovariance(cov3D, [0, 0, -5], 1000, 1000)).toEqual([0, 0, 0]);
+    expect(project2DCovariance(cov3D, [NaN, 0, 10], 1000, 1000)).toEqual([0, 0, 0]);
+    expect(project2DCovariance(cov3D, [0, 0, 10], 0, 1000)).toEqual([0, 0, 0]);
+  });
 });

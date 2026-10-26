@@ -30,4 +30,14 @@ describe('Splat Depth Radix Sort', () => {
     expect(sortedDepths[3]).toBeCloseTo(10.2);
     expect(sortedDepths[4]).toBeCloseTo(20.1);
   });
+
+  it('neutralizes NaNs and Infinities without crashing or corrupting index counts', () => {
+    const depths = new Float32Array([1.0, NaN, 5.0, Infinity]);
+    const indices = new Uint32Array([0, 1, 2, 3]);
+
+    expect(() => sortSplatsByDepth(depths, indices, false)).not.toThrow();
+    expect(indices.length).toBe(4);
+    // Highest values first: Infinity (mapped to 1e9) should be first
+    expect(indices[0]).toBe(3);
+  });
 });
