@@ -59,6 +59,16 @@ fn vs_main(
   let viewPos = camera.viewMatrix * vec4<f32>(splat.pos, 1.0);
   let clipPos = camera.projMatrix * viewPos;
 
+  // Defensive Near-Plane & Degenerate Viewport Clipping Guard:
+  // If behind or touching camera near plane (clipPos.w <= 0.001) or viewport is zero,
+  // collapse vertex into degenerate clip coordinates to avoid divide-by-zero GPU hangs.
+  if (clipPos.w <= 0.001 || camera.viewport.x <= 1e-4 || camera.viewport.y <= 1e-4) {
+    output.position = vec4<f32>(0.0, 0.0, 2.0, 1.0); // Outside NDC depth [0, 1]
+    output.color = vec4<f32>(0.0, 0.0, 0.0, 0.0);
+    output.uv = vec2<f32>(999.0, 999.0);
+    return output;
+  }
+
   let screenPos = clipPos.xy / clipPos.w;
   let pixelOffset = offset * (radius / camera.viewport);
 

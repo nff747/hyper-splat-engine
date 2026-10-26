@@ -22,7 +22,10 @@ export function sortSplatsByDepth(
   const floatView = new Float32Array(u32Keys.buffer);
 
   for (let i = 0; i < count; i++) {
-    floatView[i] = depths[i];
+    const rawVal = depths[i];
+    // Security & Numeric Guard: Neutralize NaNs, Infs, and Subnormals to 0 or MAX_FLOAT
+    const safeVal = Number.isFinite(rawVal) ? Math.max(0.0, rawVal) : (Number.isNaN(rawVal) ? 0.0 : 1e9);
+    floatView[i] = safeVal;
     const u = u32Keys[i];
     // If sign bit set, invert all bits; otherwise flip sign bit
     u32Keys[i] = (u & 0x80000000) ? ~u : (u ^ 0x80000000);

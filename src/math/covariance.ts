@@ -51,7 +51,13 @@ export function project2DCovariance(
   focalY: number
 ): [number, number, number] {
   const [tx, ty, tz] = viewPos;
-  if (tz <= 1e-4) return [0, 0, 0];
+  // Security & Stability Guard: Reject non-finite or degenerate near/behind camera positions
+  if (!Number.isFinite(tx) || !Number.isFinite(ty) || !Number.isFinite(tz) || tz <= 1e-4) {
+    return [0, 0, 0];
+  }
+  if (!Number.isFinite(focalX) || !Number.isFinite(focalY) || focalX <= 0 || focalY <= 0) {
+    return [0, 0, 0];
+  }
 
   const invZ = 1.0 / tz;
   const invZ2 = invZ * invZ;
