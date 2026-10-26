@@ -1,5 +1,6 @@
 export * from './core/types';
 export * from './core/SplatScene';
+export * from './core/ScratchMemoryPool';
 export * from './math/covariance';
 export * from './math/sorting';
 export * from './shaders/splat_render.wgsl';

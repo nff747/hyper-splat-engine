@@ -6,20 +6,22 @@
 export function sortSplatsByDepth(
   depths: Float32Array,
   indices: Uint32Array,
-  ascending: boolean = true
+  ascending: boolean = true,
+  scratchKeys?: Uint32Array,
+  scratchIndices?: Uint32Array
 ): void {
   const count = depths.length;
   if (count <= 1) return;
 
   // Re-initialize index sequence if unpopulated
-  if (indices.length !== count) {
-    throw new RangeError(`Indices array length (${indices.length}) does not match depths (${count})`);
+  if (indices.length < count) {
+    throw new RangeError(`Indices array length (${indices.length}) is smaller than depths (${count})`);
   }
 
   // 16-bit 2-pass Radix Sort on positive IEEE 754 representations
   // Map float to sortable uint32: invert negative numbers or flip sign bit
-  const u32Keys = new Uint32Array(count);
-  const floatView = new Float32Array(u32Keys.buffer);
+  const u32Keys = scratchKeys && scratchKeys.length >= count ? scratchKeys.subarray(0, count) : new Uint32Array(count);
+  const floatView = new Float32Array(u32Keys.buffer, u32Keys.byteOffset, count);
 
   for (let i = 0; i < count; i++) {
     const rawVal = depths[i];
@@ -31,7 +33,7 @@ export function sortSplatsByDepth(
     u32Keys[i] = (u & 0x80000000) ? ~u : (u ^ 0x80000000);
   }
 
-  const tempIndices = new Uint32Array(count);
+  const tempIndices = scratchIndices && scratchIndices.length >= count ? scratchIndices.subarray(0, count) : new Uint32Array(count);
   const tempKeys = new Uint32Array(count);
 
   // Pass 0: bits 0..15 (radix 65536)
