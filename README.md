@@ -1,5 +1,7 @@
 # hyper-splat-engine
 
+[![Lunar Paradox](https://img.shields.io/badge/Organization-Lunar_Paradox-0a0e1a?style=for-the-badge&logo=probot&logoColor=d7b886)](https://lunarparadox.com)
+
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![CI](https://github.com/nff747/hyper-splat-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/nff747/hyper-splat-engine/actions)
 
@@ -34,3 +36,7 @@ const cov2D = project2DCovariance(cov3D, [0, 0, 5], 800, 800);
 ## License
 
 Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for details.
+
+---
+
+*A component of the [Lunar Paradox](https://lunarparadox.com) applied systems & graphics laboratory. Engineered by nff747.*
